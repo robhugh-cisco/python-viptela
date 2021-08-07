@@ -63,6 +63,9 @@ dist: build ## Creates the distribution.
 	$(VENV_BIN)/python setup.py sdist --formats gztar
 	$(VENV_BIN)/python setup.py bdist_wheel
 
+upload: ## Write .pypirc file
+	./pypirc-file.sh
+	@twine upload --verbose dist/*
 
 test: deps ## Run python-viptela tests
 	. $(VENV_BIN)/activate; pip install -U pip; pip install -r requirements.txt -r test-requirements.txt;tox -r
