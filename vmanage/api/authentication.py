@@ -71,14 +71,12 @@ class Authentication(object):
 
             if (response.status_code != 200 or response.text.startswith('<html>')):
                 raise ConnectionError('Login failed, check user credentials.')
-
-            version = Utilities(self.session, self.host, self.port).get_vmanage_version()
-
-            if version >= '19.2.0':
-                api = 'client/token'
-                url = f'{self.base_url}{api}'
-                response = self.session.get(url=url, timeout=self.timeout)
-                self.session.headers['X-XSRF-TOKEN'] = response.content
+            
+            #assuming that user is using vManage version >= 19.2
+            api = 'client/token'
+            url = f'{self.base_url}{api}'
+            response = self.session.get(url=url, timeout=self.timeout)
+            self.session.headers['X-XSRF-TOKEN'] = response.content
 
         except requests.exceptions.RequestException as e:
             raise ConnectionError(f'Could not connect to {self.host}: {e}')
