@@ -207,6 +207,7 @@ def push_device_template(pod_number, device_template):
 
 
 def clone_feature_templates(source_pod_number, destination_pod_number):
+    delete_device_template(destination_pod_number)
     auth = vmanage_auth(source_pod_number)
     vmanage_host, vmanage_username = generate_host_and_username(source_pod_number)
     source_feature_templates = FeatureTemplates(auth, vmanage_host)
@@ -245,7 +246,6 @@ def clone_device_templates(source_pod_number, destination_pod_number):
             destination_feature_templates_dict[source_templateName]['templateId']
 
     destination_device_templates_list = source_device_templates_list
-    source_device_templates_list = copy.deepcopy(destination_device_templates_list)
     for destination_device_template in destination_device_templates_list:
         for generalTemplate in destination_device_template['generalTemplates']:
             generalTemplate['templateId'] = source_to_destination_feature_templateId_dict[generalTemplate['templateId']]
@@ -256,4 +256,5 @@ def clone_device_templates(source_pod_number, destination_pod_number):
 
 
 if __name__ == '__main__':
-    clone_device_templates(1, 3)
+    clone_feature_templates(1, 4)
+    clone_device_templates(1, 4)
